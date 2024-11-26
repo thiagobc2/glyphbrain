@@ -9,7 +9,7 @@ export default function Home() {
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      <Link href="/viewcards" style={{
+      <Link href={{ pathname: "/viewcards", query: 'teste' }} style={{
         borderRadius: '5px',
         padding: '10px 20px',
         background: '#4f85eb',
