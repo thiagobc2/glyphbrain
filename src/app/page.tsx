@@ -16,7 +16,7 @@ export default function Home() {
         color: '#fff',
         fontWeight: 'bold'
       }}>
-        Vocabulário Pág. 79
+        Vocabulários de Grego
       </Link>
 
     </div>
