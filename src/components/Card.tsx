@@ -37,7 +37,7 @@ const Card: React.FC<VocabularioItem> = (props) => {
       alignItems: 'center',
       justifyContent: 'center',
       textAlign: 'center',
-      backgroundColor: isFlipped ? 'lightgreen' : '#fff',
+      backgroundColor: '#fff',
       boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
       cursor: 'pointer',
     }}
@@ -111,10 +111,9 @@ const Card: React.FC<VocabularioItem> = (props) => {
           onClick={toggleCard}
           style={{
             marginTop: '10px',
-            border: '1px solid',
+            border: '1px solid #444',
             padding: '5px 15px',
             borderRadius: '10px',
-            backgroundColor: isFlipped ? '#fff' : 'lightgreen',
           }}
         >
           Mostrar Verso
