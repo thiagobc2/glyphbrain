@@ -14,27 +14,49 @@ interface VocabularioItem {
 export default function ViewCards() {
   const [vocabulary] = useState<VocabularioItem[]>(
     [
-      { palavra: "ἀκήκοα", pronuncia: "akékóa", traducao: "eu ouvi (perf. de ἀκούω [ouvir - akoúo])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "ἀπέσταλκα", pronuncia: "apéstalka", traducao: "eu enviei (perf. de ἀποστέλλω [enviar - apostéllō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "γεγάμηκα", pronuncia: "guegámeka", traducao: "eu casei (perf. de γαμέω [casar - gaméō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "γεγέννηκα", pronuncia: "gueguénneka", traducao: "eu gerei (perf. de γεννάω [gerar - gennáō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "γέγονα", pronuncia: "gégona", traducao: "eu me tornei, fui (perf. de γίνομαι [tornar-se - gínomai])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "γέγραφα", pronuncia: "gégrafa", traducao: "eu escrevi (perf. de γράφω [escrever - gráphō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "δέδεκα", pronuncia: "dédéka", traducao: "eu amarrei, prendi (perf. de δέω [amarar - déō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "ἠγάπηκα", pronuncia: "egápeka", traducao: "eu amei (perf. de ἀγαπάω [amar - agapáō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "ἦρκα", pronuncia: "êrka", traducao: "eu levantei, tirei (perf. de αἴρω [levantar - airō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "ᾔτηκα", pronuncia: "éiteka", traducao: "eu pedi (perf. de αἰτέω [pedir - aitéō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "κεχάρισμαι", pronuncia: "kechárismai", traducao: "eu concedi graça, favoreci (perf. de χαρίζομαι [conceder graça - charízomai])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "λέλυκα", pronuncia: "lélika", traducao: "eu soltei, libertei (perf. de λύω [libertar - lýō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "μεμαρτύρηκα", pronuncia: "memartýreka", traducao: "eu testemunhei (perf. de μαρτυρέω [testemunhar - martyréō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "πεπίστευκα", pronuncia: "pepístevka", traducao: "eu criei, tive fé (perf. de πιστεύω [crer - pisteúō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "πεπλήρωκα", pronuncia: "peplíroka", traducao: "eu cumpri, enchi (perf. de πληρόω [cumprir - plēróō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "πεποίηκα", pronuncia: "pepoíika", traducao: "eu fiz (perf. de ποιέω [fazer - poiéō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "πεφίληκα", pronuncia: "pephílika", traducao: "eu amei (perf. de φιλέω [amar - philéō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "τεθέαμαι", pronuncia: "tethéamai", traducao: "eu contemplei, vi (perf. de θεάομαι [contemplar - theáomai])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "τετέλεκα", pronuncia: "tetéleka", traducao: "eu completei, terminei (perf. de τελέω [completar - teléō])", tags: "pág 255", views: 0, remembers: 0 },
-      { palavra: "τετήρηκα", pronuncia: "tetírika", traducao: "eu guardei, observei (perf. de τηρέω [guardar - tēréō])", tags: "pág 255", views: 0, remembers: 0 }
+      { "palavra": "ἀλλήλων", "pronuncia": "allélon", "traducao": "uns aos outros, mutuamente", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ἐμαυτοῦ, -ῆς", "pronuncia": "emautû, -ês", "traducao": "de mim mesmo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "σεαυτοῦ, -ῆς", "pronuncia": "seautû, -ês", "traducao": "de ti mesmo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ἑαυτοῦ, -ῆς", "pronuncia": "heautû, -ês", "traducao": "de si mesmo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "αἴρω", "pronuncia": "airō", "traducao": "eu levanto; carrego; levo; tiro", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ἄξιος, -α, -ον", "pronuncia": "áxios, -a, -on", "traducao": "digno; merecedor", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "γαμέω", "pronuncia": "gaméō", "traducao": "eu (me) caso", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "δέω", "pronuncia": "déō", "traducao": "eu ato, amarro; prendo; proíbo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "δεξιός, -ά, -όν", "pronuncia": "dexiós, -á, -ón", "traducao": "direito; destro", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "δίδωμι", "pronuncia": "dídōmi", "traducao": "eu dou; entrego; confio; devolvo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ἕκαστος, -η, -ον", "pronuncia": "hékastos, -ē, -on", "traducao": "cada; todo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ἐλπίζω", "pronuncia": "elpízō", "traducao": "eu espero, tenho esperança", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "θεάομαι", "pronuncia": "theáomai", "traducao": "eu contemplo, olho; vejo", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "κράζω", "pronuncia": "krázō", "traducao": "eu grito", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "ποῖος, -α, -ον", "pronuncia": "poíos, -a, -on", "traducao": "de que tipo? qual? que?", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "πόσος, -η, -ον", "pronuncia": "pósos, -ē, -on", "traducao": "quão grande? (pl.: quantos?)", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "τίθημι", "pronuncia": "títhēmi", "traducao": "eu ponho; coloco", "tags": "245", "views": 0, "remembers": 0 },
+      { "palavra": "χαρίζομαι", "pronuncia": "charízomai", "traducao": "eu dou (livre e graciosamente); perdoo", "tags": "245", "views": 0, "remembers": 0 }
     ]
+
+    // [
+
+    // { palavra: "ἀκήκοα", pronuncia: "akékóa", traducao: "eu ouvi (perf. de ἀκούω [ouvir - akoúo])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "ἀπέσταλκα", pronuncia: "apéstalka", traducao: "eu enviei (perf. de ἀποστέλλω [enviar - apostéllō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "γεγάμηκα", pronuncia: "guegámeka", traducao: "eu casei (perf. de γαμέω [casar - gaméō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "γεγέννηκα", pronuncia: "gueguénneka", traducao: "eu gerei (perf. de γεννάω [gerar - gennáō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "γέγονα", pronuncia: "gégona", traducao: "eu me tornei, fui (perf. de γίνομαι [tornar-se - gínomai])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "γέγραφα", pronuncia: "gégrafa", traducao: "eu escrevi (perf. de γράφω [escrever - gráphō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "δέδεκα", pronuncia: "dédéka", traducao: "eu amarrei, prendi (perf. de δέω [amarar - déō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "ἠγάπηκα", pronuncia: "egápeka", traducao: "eu amei (perf. de ἀγαπάω [amar - agapáō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "ἦρκα", pronuncia: "êrka", traducao: "eu levantei, tirei (perf. de αἴρω [levantar - airō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "ᾔτηκα", pronuncia: "éiteka", traducao: "eu pedi (perf. de αἰτέω [pedir - aitéō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "κεχάρισμαι", pronuncia: "kechárismai", traducao: "eu concedi graça, favoreci (perf. de χαρίζομαι [conceder graça - charízomai])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "λέλυκα", pronuncia: "lélika", traducao: "eu soltei, libertei (perf. de λύω [libertar - lýō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "μεμαρτύρηκα", pronuncia: "memartýreka", traducao: "eu testemunhei (perf. de μαρτυρέω [testemunhar - martyréō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "πεπίστευκα", pronuncia: "pepístevka", traducao: "eu criei, tive fé (perf. de πιστεύω [crer - pisteúō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "πεπλήρωκα", pronuncia: "peplíroka", traducao: "eu cumpri, enchi (perf. de πληρόω [cumprir - plēróō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "πεποίηκα", pronuncia: "pepoíika", traducao: "eu fiz (perf. de ποιέω [fazer - poiéō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "πεφίληκα", pronuncia: "pephílika", traducao: "eu amei (perf. de φιλέω [amar - philéō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "τεθέαμαι", pronuncia: "tethéamai", traducao: "eu contemplei, vi (perf. de θεάομαι [contemplar - theáomai])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "τετέλεκα", pronuncia: "tetéleka", traducao: "eu completei, terminei (perf. de τελέω [completar - teléō])", tags: "pág 255", views: 0, remembers: 0 },
+    // { palavra: "τετήρηκα", pronuncia: "tetírika", traducao: "eu guardei, observei (perf. de τηρέω [guardar - tēréō])", tags: "pág 255", views: 0, remembers: 0 }
+    // ]
 
 
     // [
