@@ -1,7 +1,6 @@
 
   'use client';
   import React, { useState, useEffect } from 'react';
-  import Card from '@/components/Card';
   import { FaEye, FaCheck, FaTimes } from 'react-icons/fa';
 
 interface VocabularioItem {
