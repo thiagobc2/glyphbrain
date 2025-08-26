@@ -231,66 +231,64 @@ export default function ViewCards() {
       {/* Card e gráfico */}
       <div style={{ width: '100%', maxWidth: 480 }}>
         {/* Gráfico de evolução */}
-        <div style={{ maxWidth: 420, margin: '0 auto 8px auto', padding: '12px 0' }}>
-          <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 18 }}>Evolução dos cards</div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-            <div style={{ color: '#0077cc', fontWeight: 500 }}>Total: {totalCards}</div>
-            <div style={{ color: '#009900', fontWeight: 500 }}>Decoradas: {memorizedCards}</div>
-            <div style={{ color: '#b00', fontWeight: 500 }}>Faltam: {remainingCards}</div>
+        <div style={{ maxWidth: 420, margin: '0 auto 4px auto', padding: '6px 0' }}>
+          <div style={{ fontWeight: 500, marginBottom: 4, fontSize: 14 }}>Evolução dos cards</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <div style={{ color: '#0077cc', fontWeight: 500, fontSize: 12 }}>Total: {totalCards}</div>
+            <div style={{ color: '#009900', fontWeight: 500, fontSize: 12 }}>Decoradas: {memorizedCards}</div>
+            <div style={{ color: '#b00', fontWeight: 500, fontSize: 12 }}>Faltam: {remainingCards}</div>
           </div>
-          <div style={{ height: 22, background: '#eee', borderRadius: 8, overflow: 'hidden', marginBottom: 4, boxShadow: '0 1px 4px #0001' }}>
+          <div style={{ height: 12, background: '#eee', borderRadius: 8, overflow: 'hidden', marginBottom: 2, boxShadow: '0 1px 4px #0001' }}>
             <div style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg,#0077cc 60%,#009900 100%)', height: '100%', transition: 'width 0.3s' }}></div>
           </div>
-          <div style={{ fontSize: 14, color: '#555', textAlign: 'right' }}>{progressPercent}% concluído</div>
+          <div style={{ fontSize: 11, color: '#555', textAlign: 'right' }}>{progressPercent}% concluído</div>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '8px', color: '#222' }}>
-          <br />
-          Quantidade de cards: {filteredVocabulary.length}
+        <div style={{ textAlign: 'center', marginTop: '4px', color: '#222' }}>
           {currentCard ? (
             <div>
-              <div style={{ margin: '8px auto 0 auto', maxWidth: 400, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0002', padding: 24 }}>
-                <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>{currentCard.palavra}</div>
+              <div style={{ margin: '1px auto 0 auto', maxWidth: 400, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0002', padding: 12 }}>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 6 }}>{currentCard.palavra}</div>
                 {/* Status de decorado */}
                 {(() => {
                   const hist = history[currentCard.palavra] || [];
                   if (hist.length === 5 && hist.every(v => v === 1)) {
-                    return <div style={{ color: '#009900', fontWeight: 500, marginBottom: 8 }}>✅ Decorado!</div>;
+                    return <div style={{ color: '#009900', fontWeight: 500, marginBottom: 6, fontSize: 13 }}>✅ Decorado!</div>;
                   }
                   return null;
                 })()}
                 {showFront ? null : (
                   <>
-                    <div style={{ fontSize: 16, color: '#555', marginBottom: 8 }}>{currentCard.pronuncia}</div>
-                    <div style={{ fontSize: 18, color: '#333', marginBottom: 16 }}>{currentCard.traducao}</div>
+                    <div style={{ fontSize: 13, color: '#555', marginBottom: 6 }}>{currentCard.pronuncia}</div>
+                    <div style={{ fontSize: 14, color: '#333', marginBottom: 10 }}>{currentCard.traducao}</div>
                   </>
                 )}
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 16 }}>
-                  <span title="Visualizações"><FaEye style={{ verticalAlign: 'middle', color: '#0077cc' }} /> {currentCard.views}</span>
-                  <span title="Lembrei"><FaCheck style={{ verticalAlign: 'middle', color: '#009900' }} /> {currentCard.remembers}</span>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 18, marginBottom: 10 }}>
+                  <span title="Visualizações"><FaEye style={{ verticalAlign: 'middle', color: '#0077cc', fontSize: 13 }} /> {currentCard.views}</span>
+                  <span title="Lembrei"><FaCheck style={{ verticalAlign: 'middle', color: '#009900', fontSize: 13 }} /> {currentCard.remembers}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 8 }}>
                   {showFront && (
                     <button
                       onClick={() => setShowFront(false)}
-                      style={{ background: '#0077cc', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                      style={{ background: '#0077cc', color: '#fff', border: 'none', borderRadius: 5, padding: '7px 14px', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}
                     >
                       Ver verso
                     </button>
                   )}
                 </div>
                 {!showFront && (
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
                     <button
                       onClick={() => handleNextCard(true)}
-                      style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                      style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 5, padding: '7px 14px', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}
                     >
-                      <FaCheck style={{ marginRight: 8 }} /> Lembrei
+                      <FaCheck style={{ marginRight: 6 }} /> Lembrei
                     </button>
                     <button
                       onClick={() => handleNextCard(false)}
-                      style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                      style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 5, padding: '7px 14px', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}
                     >
-                      <FaTimes style={{ marginRight: 8 }} /> Não lembrei
+                      <FaTimes style={{ marginRight: 6 }} /> Não lembrei
                     </button>
                   </div>
                 )}
