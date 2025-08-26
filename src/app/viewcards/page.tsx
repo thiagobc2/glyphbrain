@@ -1,5 +1,6 @@
 
   'use client';
+  // ...existing code...
   import React, { useState, useEffect } from 'react';
   import { FaEye, FaCheck, FaTimes } from 'react-icons/fa';
 
@@ -121,14 +122,20 @@ export default function ViewCards() {
     // ]
   )
 
-  const [tags, setTags] = useState<string[]>([]);
-  const [selectedTag, setSelectedTag] = useState<string>('');
   const [filteredVocabulary, setFilteredVocabulary] = useState<VocabularioItem[]>(vocabulary);
+  // Lista ordenada para exibição
+  const sortedList = [...filteredVocabulary].sort((a, b) => {
+    if (b.views !== a.views) return b.views - a.views;
+    return a.remembers - b.remembers;
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shownCards, setShownCards] = useState<VocabularioItem[]>([]);
+  // Histórico de acertos para cada card
+  const [history, setHistory] = useState<Record<string, number[]>>({});
   // Carregar dados do localStorage ao iniciar
   useEffect(() => {
     const saved = localStorage.getItem('vocabularyStats');
+    const savedHistory = localStorage.getItem('vocabularyHistory');
     if (saved) {
       const stats = JSON.parse(saved);
       setVocabulary(prev => prev.map(item => {
@@ -139,31 +146,11 @@ export default function ViewCards() {
         return item;
       }));
     }
-  }, []);
-
-  useEffect(() => {
-    const uniqueTags = Array.from(
-      new Set(vocabulary.flatMap(item => item.tags.split(',').map(tag => tag.trim())))
-    );
-    setTags(uniqueTags);
-  }, [vocabulary]);
-
-  useEffect(() => {
-    const filtered = selectedTag
-      ? vocabulary.filter(item =>
-        item.tags.split(',').map(tag => tag.trim()).includes(selectedTag)
-      )
-      : vocabulary;
-
-    setFilteredVocabulary(filtered);
-    setShownCards([]);
-  }, [selectedTag, vocabulary]);
-
-  useEffect(() => {
-    if (filteredVocabulary.length > 0 && shownCards.length === filteredVocabulary.length) {
-      setShownCards([]);
+    if (savedHistory) {
+      setHistory(JSON.parse(savedHistory));
     }
-  }, [filteredVocabulary, shownCards]);
+    setFilteredVocabulary(vocabulary);
+  }, []);
 
   const handleNextCard = (remembered: boolean) => {
     if (filteredVocabulary.length === 0) return;
@@ -182,6 +169,15 @@ export default function ViewCards() {
     });
     setVocabulary(updatedVocabulary);
 
+    // Atualizar histórico de acertos
+    setHistory(prev => {
+      const prevArr = prev[card.palavra] || [];
+      const newArr = [...prevArr, remembered ? 1 : 0].slice(-5);
+      const newHistory = { ...prev, [card.palavra]: newArr };
+      localStorage.setItem('vocabularyHistory', JSON.stringify(newHistory));
+      return newHistory;
+    });
+
     // Salvar stats no localStorage
     const stats: Record<string, { views: number; remembers: number }> = {};
     updatedVocabulary.forEach(item => {
@@ -189,91 +185,148 @@ export default function ViewCards() {
     });
     localStorage.setItem('vocabularyStats', JSON.stringify(stats));
 
-    // Próximo card
+    // Próximo card - algoritmo ponderado
     const remainingCards = filteredVocabulary.filter(
-      item => !shownCards.includes(item)
+      item => !shownCards.includes(item) && item.palavra !== card.palavra
     );
-    const nextCard =
-      remainingCards.length > 0
-        ? remainingCards[Math.floor(Math.random() * remainingCards.length)]
-        : null;
-    if (nextCard) {
-      setCurrentIndex(filteredVocabulary.indexOf(nextCard));
-      setShownCards([...shownCards, nextCard]);
-      setShowFront(true);
+    if (remainingCards.length === 0) return;
+
+    // Score: mais vistos e menos lembrados = maior chance
+    // Se decorado (5 acertos nas últimas 5), score é dividido por 10
+    const scores = remainingCards.map(item => {
+      const hist = history[item.palavra] || [];
+      const isMemorized = hist.length === 5 && hist.every(v => v === 1);
+      const baseScore = (item.views + 1) / (item.remembers + 1);
+      return isMemorized ? baseScore / 10 : baseScore;
+    });
+    const totalScore = scores.reduce((a, b) => a + b, 0);
+    const rand = Math.random() * totalScore;
+    let acc = 0;
+    let nextIdx = 0;
+    for (let i = 0; i < remainingCards.length; i++) {
+      acc += scores[i];
+      if (rand <= acc) {
+        nextIdx = i;
+        break;
+      }
     }
+    const nextCard = remainingCards[nextIdx];
+    setCurrentIndex(filteredVocabulary.indexOf(nextCard));
+    setShownCards([...shownCards, nextCard]);
+    setShowFront(true);
   };
+  // Progresso de cards decorados
+  const totalCards = filteredVocabulary.length;
+  // Considera decorado se acertou 5 vezes nas últimas 5 visualizações
+  const memorizedCards = filteredVocabulary.filter(item => {
+    const hist = history[item.palavra] || [];
+    return hist.length === 5 && hist.every(v => v === 1);
+  }).length;
+  const remainingCards = totalCards - memorizedCards;
+  const progressPercent = totalCards > 0 ? Math.round((memorizedCards / totalCards) * 100) : 0;
 
   const currentCard = filteredVocabulary[currentIndex] || null;
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px', color: '#222' }}>
-      <select
-        value={selectedTag}
-        onChange={(e) => setSelectedTag(e.target.value)}
-        style={{
-          marginBottom: '20px',
-          padding: '10px',
-          width: '80%',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          color: '#222',
-          background: '#fff',
-        }}
-      >
-        <option value="">Todas as Tags</option>
-        {tags.map(tag => (
-          <option key={tag} value={tag}>
-            {tag}
-          </option>
-        ))}
-      </select>
-      <br />
-      Quantidade de cards: {filteredVocabulary.length}
-      {currentCard ? (
-        <>
-          <div style={{ margin: '20px auto', maxWidth: 400, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0002', padding: 24 }}>
-            <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>{currentCard.palavra}</div>
-            {showFront ? null : (
-              <>
-                <div style={{ fontSize: 16, color: '#555', marginBottom: 8 }}>{currentCard.pronuncia}</div>
-                <div style={{ fontSize: 18, color: '#333', marginBottom: 16 }}>{currentCard.traducao}</div>
-              </>
-            )}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 16 }}>
-              <span title="Visualizações"><FaEye style={{ verticalAlign: 'middle', color: '#0077cc' }} /> {currentCard.views}</span>
-              <span title="Lembrei"><FaCheck style={{ verticalAlign: 'middle', color: '#009900' }} /> {currentCard.remembers}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 12 }}>
-              {showFront && (
-                <button
-                  onClick={() => setShowFront(false)}
-                  style={{ background: '#0077cc', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
-                >
-                  Ver verso
-                </button>
-              )}
-            </div>
-            {!showFront && (
-              <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
-                <button
-                  onClick={() => handleNextCard(true)}
-                  style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
-                >
-                  <FaCheck style={{ marginRight: 8 }} /> Lembrei
-                </button>
-                <button
-                  onClick={() => handleNextCard(false)}
-                  style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
-                >
-                  <FaTimes style={{ marginRight: 8 }} /> Não lembrei
-                </button>
-              </div>
-            )}
+  <div style={{ maxHeight: '100vh', minHeight: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', marginLeft: 30, marginRight: 30 }}>
+      {/* Card e gráfico */}
+      <div style={{ width: '100%', maxWidth: 480 }}>
+        {/* Gráfico de evolução */}
+        <div style={{ maxWidth: 420, margin: '0 auto 8px auto', padding: '12px 0' }}>
+          <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 18 }}>Evolução dos cards</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div style={{ color: '#0077cc', fontWeight: 500 }}>Total: {totalCards}</div>
+            <div style={{ color: '#009900', fontWeight: 500 }}>Decoradas: {memorizedCards}</div>
+            <div style={{ color: '#b00', fontWeight: 500 }}>Faltam: {remainingCards}</div>
           </div>
-        </>
-      ) : (
-        <p style={{ color: '#b00' }}>Nenhum card encontrado para a tag: {selectedTag}</p>
+          <div style={{ height: 22, background: '#eee', borderRadius: 8, overflow: 'hidden', marginBottom: 4, boxShadow: '0 1px 4px #0001' }}>
+            <div style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg,#0077cc 60%,#009900 100%)', height: '100%', transition: 'width 0.3s' }}></div>
+          </div>
+          <div style={{ fontSize: 14, color: '#555', textAlign: 'right' }}>{progressPercent}% concluído</div>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '8px', color: '#222' }}>
+          <br />
+          Quantidade de cards: {filteredVocabulary.length}
+          {currentCard ? (
+            <div>
+              <div style={{ margin: '8px auto 0 auto', maxWidth: 400, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0002', padding: 24 }}>
+                <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>{currentCard.palavra}</div>
+                {/* Status de decorado */}
+                {(() => {
+                  const hist = history[currentCard.palavra] || [];
+                  if (hist.length === 5 && hist.every(v => v === 1)) {
+                    return <div style={{ color: '#009900', fontWeight: 500, marginBottom: 8 }}>✅ Decorado!</div>;
+                  }
+                  return null;
+                })()}
+                {showFront ? null : (
+                  <>
+                    <div style={{ fontSize: 16, color: '#555', marginBottom: 8 }}>{currentCard.pronuncia}</div>
+                    <div style={{ fontSize: 18, color: '#333', marginBottom: 16 }}>{currentCard.traducao}</div>
+                  </>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 16 }}>
+                  <span title="Visualizações"><FaEye style={{ verticalAlign: 'middle', color: '#0077cc' }} /> {currentCard.views}</span>
+                  <span title="Lembrei"><FaCheck style={{ verticalAlign: 'middle', color: '#009900' }} /> {currentCard.remembers}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 12 }}>
+                  {showFront && (
+                    <button
+                      onClick={() => setShowFront(false)}
+                      style={{ background: '#0077cc', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                    >
+                      Ver verso
+                    </button>
+                  )}
+                </div>
+                {!showFront && (
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
+                    <button
+                      onClick={() => handleNextCard(true)}
+                      style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                    >
+                      <FaCheck style={{ marginRight: 8 }} /> Lembrei
+                    </button>
+                    <button
+                      onClick={() => handleNextCard(false)}
+                      style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 5, padding: '10px 18px', fontSize: 16, cursor: 'pointer', fontWeight: 500 }}
+                    >
+                      <FaTimes style={{ marginRight: 8 }} /> Não lembrei
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p style={{ color: '#b00' }}>Nenhum card encontrado.</p>
+          )}
+        </div>
+      </div>
+      {/* Lista compacta embaixo do card, oculta no verso */}
+      {showFront && (
+        <div style={{ width: '100%', maxWidth: 480, height: 'calc(100vh - 370px)', minHeight: 120, overflowY: 'auto', background: '#fafcff', borderRadius: 8, boxShadow: '0 1px 6px #0001', padding: '8px 0', marginTop: 8 }}>
+          <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 15, textAlign: 'center' }}>Lista de palavras</div>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {sortedList.map(item => (
+              <li key={item.palavra} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '4px 10px', marginBottom: 2,
+                background: currentCard && currentCard.palavra === item.palavra ? '#e6f7ff' : '#fff',
+                borderRadius: 4, boxShadow: '0 1px 2px #0001', cursor: 'pointer',
+                border: currentCard && currentCard.palavra === item.palavra ? '2px solid #0077cc' : '1px solid #eee',
+                fontSize: 13
+              }}
+                onClick={() => setCurrentIndex(filteredVocabulary.indexOf(item))}
+              >
+                <span style={{ fontWeight: 500, color: '#222', fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>{item.palavra}</span>
+                <span style={{ color: '#555', marginLeft: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <FaEye style={{ verticalAlign: 'middle', color: '#0077cc', marginRight: 2, fontSize: 13 }} /> {item.views}
+                  <FaCheck style={{ verticalAlign: 'middle', color: '#009900', marginRight: 2, fontSize: 13 }} /> {item.remembers}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
-  )
+  );
 }
