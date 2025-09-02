@@ -30,42 +30,43 @@ export default function ViewCards() {
   { palavra: "χωρίς (41)", pronuncia: "chorís", traducao: "à parte, separadamente; c. gen.: sem, à parte de; fora", tags: "41", views: 0, remembers: 0 }
 ];
 
+  // const initialVocabulary: VocabularioItem[] = [
+  //   { palavra: "ἀδύνατος, -ον (ἐστιν)", pronuncia: "adúnatos, -on (éstin)", traducao: "(é) impossível; impotente, fraco", tags: "10", views: 0, remembers: 0 },
+  //   { palavra: "ἀντίχριστος, ὁ", pronuncia: "antíkhristos, ho", traducao: "anticristo", tags: "5", views: 0, remembers: 0 },
+  //   { palavra: "ἄρα", pronuncia: "ára", traducao: "pois; portanto; então", tags: "49", views: 0, remembers: 0 },
+  //   { palavra: "δεῖ", pronuncia: "deî", traducao: "é necessário; deve-se", tags: "101", views: 0, remembers: 0 },
+  //   { palavra: "διὰ (+inf.)", pronuncia: "diá", traducao: "por causa de; por; porque", tags: "27", views: 0, remembers: 0 },
+  //   { palavra: "διό", pronuncia: "dió", traducao: "por isso; portanto", tags: "53", views: 0, remembers: 0 },
+  //   { palavra: "εἰς (+inf.)", pronuncia: "eís", traducao: "para; para que; de maneira que", tags: "63", views: 0, remembers: 0 },
+  //   { palavra: "ἐν (+inf.)", pronuncia: "en", traducao: "enquanto; quando; ao + inf.; depois de + inf.; por + inf.", tags: "52", views: 0, remembers: 0 },
+  //   { palavra: "ἔξεστι(ν)", pronuncia: "éxesti(n)", traducao: "é lícito; é permitido; é possível", tags: "32", views: 0, remembers: 0 },
+  //   { palavra: "μετὰ (+inf.)", pronuncia: "metá", traducao: "depois de + inf.", tags: "15", views: 0, remembers: 0 },
+  //   { palavra: "πρίν (+inf.)", pronuncia: "prín", traducao: "antes; antes de", tags: "13", views: 0, remembers: 0 },
+  //   { palavra: "πρὸ (+inf.)", pronuncia: "pró", traducao: "antes; antes de", tags: "9", views: 0, remembers: 0 },
+  //   { palavra: "πρὸς (+inf.)", pronuncia: "prós", traducao: "para; a fim de; assim que; de modo que", tags: "12", views: 0, remembers: 0 },
+  //   { palavra: "σήμερον", pronuncia: "sḗmeron", traducao: "hoje", tags: "41", views: 0, remembers: 0 },
+  //   { palavra: "συμφέρει", pronuncia: "symphérei", traducao: "convém; é melhor; é proveitoso", tags: "10", views: 0, remembers: 0 },
+  //   { palavra: "φοβέομαι", pronuncia: "phobéomai", traducao: "eu temo; estou com medo; reverencio; respeito", tags: "95", views: 0, remembers: 0 },
+  //   { palavra: "ὧδε", pronuncia: "hṓde", traducao: "aqui; para cá", tags: "61", views: 0, remembers: 0 },
+  //   { palavra: "ὥστε", pronuncia: "hṓste", traducao: "por isso; portanto; de modo que; a fim de que; para", tags: "83", views: 0, remembers: 0 }
+  // ];
+
   const [vocabulary, setVocabulary] = useState<VocabularioItem[]>(initialVocabulary);
   const [filteredVocabulary, setFilteredVocabulary] = useState<VocabularioItem[]>(initialVocabulary);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shownCards, setShownCards] = useState<VocabularioItem[]>([]);
   const [history, setHistory] = useState<Record<string, number[]>>({});
   const [feedback, setFeedback] = useState<{ idx: number; count: number; show: boolean; confetti: boolean }>({ idx: -1, count: 0, show: false, confetti: false });
-  const [showBack, setShowBack] = useState(false);
 
   useEffect(() => {
     setFilteredVocabulary(vocabulary);
   }, [vocabulary]);
 
   useEffect(() => {
-    const savedStats = localStorage.getItem('vocabularyStats');
-    const savedHistory = localStorage.getItem('vocabularyHistory');
-    let historyObj: Record<string, number[]> = {};
-    if (savedHistory) {
-      historyObj = JSON.parse(savedHistory);
-      setHistory(historyObj);
-    }
-    if (savedStats) {
-      const stats = JSON.parse(savedStats);
-      setVocabulary(prev => prev.map(item => {
-        const key = item.palavra;
-        let remembers = 0;
-        if (historyObj[key]) {
-          remembers = historyObj[key].filter((v: number) => v === 1).length;
-        } else if (stats[key]) {
-          remembers = stats[key].remembers;
-        }
-        return stats[key]
-          ? { ...item, views: stats[key].views, remembers }
-          : { ...item, remembers };
-      }));
-    }
-  }, []);
+    setVocabulary(initialVocabulary);
+    setFilteredVocabulary(initialVocabulary);
+    setHistory({});
+  }, [initialVocabulary]);
 
   // Cores para barra de acertos
   const getBarColor = (count: number) => {
@@ -99,10 +100,6 @@ export default function ViewCards() {
   const handleNextCard = (remembered: boolean) => {
     if (filteredVocabulary.length === 0) return;
     const card = filteredVocabulary[currentIndex];
-    
-    // Reset para frente do card
-    setShowBack(false);
-    
     // Atualiza views
     const updatedVocabulary = vocabulary.map((item: VocabularioItem) => {
       if (item.palavra === card.palavra) {
@@ -118,7 +115,6 @@ export default function ViewCards() {
       const prevArr = prev[card.palavra] || [];
       const newArr = [...prevArr, remembered ? 1 : 0].slice(-5);
       const newHistory: Record<string, number[]> = { ...prev, [card.palavra]: newArr };
-      localStorage.setItem('vocabularyHistory', JSON.stringify(newHistory));
       // Recalcula remembers para todos os cards
       setVocabulary((vocabulary: VocabularioItem[]) => vocabulary.map((item: VocabularioItem) => {
         const hist = newHistory[item.palavra] || [];
@@ -127,13 +123,6 @@ export default function ViewCards() {
           remembers: hist.filter((v: number) => v === 1).length
         };
       }));
-      // Salva stats
-      const stats: Record<string, { views: number; remembers: number }> = {};
-      updatedVocabulary.forEach((item: VocabularioItem) => {
-        const hist = newHistory[item.palavra] || [];
-        stats[item.palavra] = { views: item.views, remembers: hist.filter((v: number) => v === 1).length };
-      });
-      localStorage.setItem('vocabularyStats', JSON.stringify(stats));
       // Próximo card
       const remainingCards = filteredVocabulary.filter((item: VocabularioItem) => !shownCards.includes(item) && item.palavra !== card.palavra);
       if (remainingCards.length === 0) return newHistory;
@@ -184,12 +173,8 @@ export default function ViewCards() {
           return (
             <div style={{ width: '100%', textAlign: 'center' }}>
               <div style={{ fontWeight: 600, color: '#222', fontSize: 16, marginBottom: 2 }}>{item.palavra}</div>
-              {showBack && (
-                <>
-                  <div style={{ color: '#555', fontSize: 14 }}>{item.pronuncia}</div>
-                  <div style={{ color: '#333', fontSize: 14, marginBottom: 2 }}>{item.traducao}</div>
-                </>
-              )}
+              <div style={{ color: '#555', fontSize: 14 }}>{item.pronuncia}</div>
+              <div style={{ color: '#333', fontSize: 14, marginBottom: 2 }}>{item.traducao}</div>
               <div style={{ display: 'flex', gap: 2, marginTop: 2 }}>
                 {Array.from({ length: 5 }).map((_, i) => {
                   const val = hist[hist.length - 5 + i];
@@ -206,71 +191,58 @@ export default function ViewCards() {
                   {feedback.count}/5 acertos consecutivos!
                 </div>
               )}
-              <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-                {!showBack ? (
-                  <button
-                    onClick={() => setShowBack(true)}
-                    style={{ background: '#007acc', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
-                  >
-                    <FaEye style={{ marginRight: 4 }} /> Ver verso
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={e => { e.stopPropagation(); handleNextCard(true); handleCardFeedback(currentIndex, true); }}
-                      style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
-                    >
-                      <FaCheck style={{ marginRight: 4 }} /> Lembrei
-                    </button>
-                    <button
-                      onClick={e => { e.stopPropagation(); handleNextCard(false); handleCardFeedback(currentIndex, false); }}
-                      style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
-                    >
-                      <FaTimes style={{ marginRight: 4 }} /> Não lembrei
-                    </button>
-                  </>
-                )}
+              <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                <button
+                  onClick={e => { e.stopPropagation(); handleNextCard(true); handleCardFeedback(currentIndex, true); }}
+                  style={{ background: '#009900', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
+                >
+                  <FaCheck style={{ marginRight: 4 }} /> Lembrei
+                </button>
+                <button
+                  onClick={e => { e.stopPropagation(); handleNextCard(false); handleCardFeedback(currentIndex, false); }}
+                  style={{ background: '#b00', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
+                >
+                  <FaTimes style={{ marginRight: 4 }} /> Não lembrei
+                </button>
               </div>
             </div>
           );
         })()}
       </div>
-      {/* Lista compacta das palavras abaixo do card - só aparece quando não está no verso */}
-      {!showBack && (
-        <div style={{ width: '100%', maxWidth: 420, margin: '0 auto', marginTop: 8, background: '#fafcff', borderRadius: 8, boxShadow: '0 1px 6px #0001', padding: '8px 0' }}>
-          {filteredVocabulary.length > 0 && sortedList.map((item, idx) => {
-            const hist = history[item.palavra] || [];
-            let count = 0;
-            for (let i = hist.length - 1; i >= 0 && hist[i] === 1; i--) count++;
-            const barColor = getBarColor(count);
-            return (
-              <div key={item.palavra} style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '6px 12px',
-                borderBottom: '1px solid #eee',
-                fontSize: 13,
-                background: barColor,
-                border: idx === currentIndex ? '2px solid #2196f3' : '2px solid transparent',
-                cursor: 'pointer',
-                transition: 'background 0.3s, border 0.2s'
-              }} onClick={() => { setCurrentIndex(idx); setShowBack(false); }}>
-                <span style={{ fontWeight: 600, color: '#222' }}>{item.palavra}</span>
-                <span style={{ color: '#555', marginLeft: 8 }}>{item.pronuncia}</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', background: '#fff', borderRadius: 6, padding: '2px 8px', boxShadow: '0 1px 4px #0001' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', fontSize: 13, color: '#0077cc' }}>
-                    <FaEye style={{ marginRight: 3 }} />{item.views}
-                  </span>
-                  <span style={{ display: 'flex', alignItems: 'center', fontSize: 13, color: '#009900' }}>
-                    <FaCheck style={{ marginRight: 3 }} />{item.remembers}
-                  </span>
-                </div>
+      {/* Lista compacta das palavras abaixo do card */}
+      <div style={{ width: '100%', maxWidth: 420, margin: '0 auto', marginTop: 8, background: '#fafcff', borderRadius: 8, boxShadow: '0 1px 6px #0001', padding: '8px 0' }}>
+        {filteredVocabulary.length > 0 && sortedList.map((item, idx) => {
+          const hist = history[item.palavra] || [];
+          let count = 0;
+          for (let i = hist.length - 1; i >= 0 && hist[i] === 1; i--) count++;
+          const barColor = getBarColor(count);
+          return (
+            <div key={item.palavra} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '6px 12px',
+              borderBottom: '1px solid #eee',
+              fontSize: 13,
+              background: barColor,
+              border: idx === currentIndex ? '2px solid #2196f3' : '2px solid transparent',
+              cursor: 'pointer',
+              transition: 'background 0.3s, border 0.2s'
+            }} onClick={() => setCurrentIndex(idx)}>
+              <span style={{ fontWeight: 600, color: '#222' }}>{item.palavra}</span>
+              <span style={{ color: '#555', marginLeft: 8 }}>{item.pronuncia}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', background: '#fff', borderRadius: 6, padding: '2px 8px', boxShadow: '0 1px 4px #0001' }}>
+                <span style={{ display: 'flex', alignItems: 'center', fontSize: 13, color: '#0077cc' }}>
+                  <FaEye style={{ marginRight: 3 }} />{item.views}
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', fontSize: 13, color: '#009900' }}>
+                  <FaCheck style={{ marginRight: 3 }} />{item.remembers}
+                </span>
               </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
