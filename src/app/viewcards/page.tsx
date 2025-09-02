@@ -12,23 +12,23 @@ interface VocabularioItem {
 }
 
 export default function ViewCards() {
-  const initialVocabulary: VocabularioItem[] = [
-  { palavra: "δικαιόω (39)", pronuncia: "dikaióo̱", traducao: "eu justifico, declaro justo", tags: "39", views: 0, remembers: 0 },
-  { palavra: "δουλόω (8)", pronuncia: "doulóo̱", traducao: "eu escravizo", tags: "8", views: 0, remembers: 0 },
-  { palavra: "ἐλευθερόω (7)", pronuncia: "eleutheróo̱", traducao: "eu liberto", tags: "7", views: 0, remembers: 0 },
-  { palavra: "εὐχαριστέω (38)", pronuncia: "eucharistéō", traducao: "eu agradeço, dou graças", tags: "38", views: 0, remembers: 0 },
-  { palavra: "ζηλόω (11)", pronuncia: "zēlóo̱", traducao: "eu mostro zelo, procuro com zelo; estou com inveja [zelar]", tags: "11", views: 0, remembers: 0 },
-  { palavra: "σιγάω (10)", pronuncia: "sigáo̱", traducao: "eu me calo, fico quieto", tags: "10", views: 0, remembers: 0 },
-  { palavra: "τιμάω (21)", pronuncia: "timáo̱", traducao: "eu honro, estimo; avalio", tags: "21", views: 0, remembers: 0 },
-  { palavra: "ὑψόω (20)", pronuncia: "hypsóo̱", traducao: "eu elevo, exalto", tags: "20", views: 0, remembers: 0 },
-  { palavra: "φωνέω (42)", pronuncia: "phōnéō", traducao: "eu emito som; clamo; chamo", tags: "42", views: 0, remembers: 0 },
-  { palavra: "καρπός, ὁ (66)", pronuncia: "karpós, ho", traducao: "fruto", tags: "66", views: 0, remembers: 0 },
-  { palavra: "μέν (180)", pronuncia: "mén", traducao: "partícula usada correlativamente, pospositiva; geralmente não é traduzida", tags: "180", views: 0, remembers: 0 },
-  { palavra: "πάλιν (141)", pronuncia: "pálin", traducao: "outra vez, de novo", tags: "141", views: 0, remembers: 0 },
-  { palavra: "πάσχω (42)", pronuncia: "páscho̱", traducao: "eu sofro", tags: "42", views: 0, remembers: 0 },
-  { palavra: "τέ (215)", pronuncia: "té", traducao: "part. encl.: τε…τε ou τε…καί, tanto…como, não somente… mas também", tags: "215", views: 0, remembers: 0 },
-  { palavra: "χωρίς (41)", pronuncia: "chorís", traducao: "à parte, separadamente; c. gen.: sem, à parte de; fora", tags: "41", views: 0, remembers: 0 }
-];
+  const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
+    { palavra: "δικαιόω (39)", pronuncia: "dikaióo̱", traducao: "eu justifico, declaro justo", tags: "39", views: 0, remembers: 0 },
+    { palavra: "δουλόω (8)", pronuncia: "doulóo̱", traducao: "eu escravizo", tags: "8", views: 0, remembers: 0 },
+    { palavra: "ἐλευθερόω (7)", pronuncia: "eleutheróo̱", traducao: "eu liberto", tags: "7", views: 0, remembers: 0 },
+    { palavra: "εὐχαριστέω (38)", pronuncia: "eucharistéō", traducao: "eu agradeço, dou graças", tags: "38", views: 0, remembers: 0 },
+    { palavra: "ζηλόω (11)", pronuncia: "zēlóo̱", traducao: "eu mostro zelo, procuro com zelo; estou com inveja [zelar]", tags: "11", views: 0, remembers: 0 },
+    { palavra: "σιγάω (10)", pronuncia: "sigáo̱", traducao: "eu me calo, fico quieto", tags: "10", views: 0, remembers: 0 },
+    { palavra: "τιμάω (21)", pronuncia: "timáo̱", traducao: "eu honro, estimo; avalio", tags: "21", views: 0, remembers: 0 },
+    { palavra: "ὑψόω (20)", pronuncia: "hypsóo̱", traducao: "eu elevo, exalto", tags: "20", views: 0, remembers: 0 },
+    { palavra: "φωνέω (42)", pronuncia: "phōnéō", traducao: "eu emito som; clamo; chamo", tags: "42", views: 0, remembers: 0 },
+    { palavra: "καρπός, ὁ (66)", pronuncia: "karpós, ho", traducao: "fruto", tags: "66", views: 0, remembers: 0 },
+    { palavra: "μέν (180)", pronuncia: "mén", traducao: "partícula usada correlativamente, pospositiva; geralmente não é traduzida", tags: "180", views: 0, remembers: 0 },
+    { palavra: "πάλιν (141)", pronuncia: "pálin", traducao: "outra vez, de novo", tags: "141", views: 0, remembers: 0 },
+    { palavra: "πάσχω (42)", pronuncia: "páscho̱", traducao: "eu sofro", tags: "42", views: 0, remembers: 0 },
+    { palavra: "τέ (215)", pronuncia: "té", traducao: "part. encl.: τε…τε ou τε…καί, tanto…como, não somente… mas também", tags: "215", views: 0, remembers: 0 },
+    { palavra: "χωρίς (41)", pronuncia: "chorís", traducao: "à parte, separadamente; c. gen.: sem, à parte de; fora", tags: "41", views: 0, remembers: 0 }
+  ], []);
 
   const [vocabulary, setVocabulary] = useState<VocabularioItem[]>(initialVocabulary);
   const [filteredVocabulary, setFilteredVocabulary] = useState<VocabularioItem[]>(initialVocabulary);
@@ -104,7 +104,7 @@ export default function ViewCards() {
     setShowBack(false);
     
     // Atualiza views
-    const updatedVocabulary = vocabulary.map((item: VocabularioItem) => {
+    setVocabulary(vocabulary => vocabulary.map((item: VocabularioItem) => {
       if (item.palavra === card.palavra) {
         return {
           ...item,
@@ -112,7 +112,7 @@ export default function ViewCards() {
         };
       }
       return item;
-    });
+    }));
     // Atualiza histórico
     setHistory((prev: Record<string, number[]>) => {
       const prevArr = prev[card.palavra] || [];
@@ -127,13 +127,7 @@ export default function ViewCards() {
           remembers: hist.filter((v: number) => v === 1).length
         };
       }));
-      // Salva stats
-      const stats: Record<string, { views: number; remembers: number }> = {};
-      updatedVocabulary.forEach((item: VocabularioItem) => {
-        const hist = newHistory[item.palavra] || [];
-        stats[item.palavra] = { views: item.views, remembers: hist.filter((v: number) => v === 1).length };
-      });
-      localStorage.setItem('vocabularyStats', JSON.stringify(stats));
+  // ...removido: stats e updatedVocabulary...
       // Próximo card
       const remainingCards = filteredVocabulary.filter((item: VocabularioItem) => !shownCards.includes(item) && item.palavra !== card.palavra);
       if (remainingCards.length === 0) return newHistory;
