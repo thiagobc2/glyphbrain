@@ -13,21 +13,44 @@ interface VocabularioItem {
 
 export default function ViewCards() {
   const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
-  { palavra: "εἰ (517)", pronuncia: "ei", traducao: "se (c. o ind.)", tags: "517", views: 0, remembers: 0 },
-  { palavra: "ἄν (167)", pronuncia: "án", traducao: "part. condicional/eventualidade (não traduzida)", tags: "167", views: 0, remembers: 0 },
-  { palavra: "ἐάν (351)", pronuncia: "eán", traducao: "se (c. o subj.)", tags: "351", views: 0, remembers: 0 },
-  { palavra: "ἀδικία, ἡ (25)", pronuncia: "adikía, he̱", traducao: "injustiça, maldade", tags: "25", views: 0, remembers: 0 },
-  { palavra: "ἄχρι / ἄχρις (49)", pronuncia: "áchri / áchris", traducao: "até; até que (c. gen.)", tags: "49", views: 0, remembers: 0 },
-  { palavra: "ἴδιος, -α, -ον (114)", pronuncia: "ídios, -a, -on", traducao: "próprio", tags: "114", views: 0, remembers: 0 },
-  { palavra: "καθαρίζω (31)", pronuncia: "katharízō", traducao: "eu limpo, purifico [catarse]", tags: "31", views: 0, remembers: 0 },
-  { palavra: "λοιπός, -ή, -όν (55)", pronuncia: "loipós, -ē, -on", traducao: "restante; outro; adv.: daqui para frente; finalmente", tags: "55", views: 0, remembers: 0 },
-  { palavra: "μέσος, -η, -ον (58)", pronuncia: "mésos, -e̱, -on", traducao: "(que está) no meio; do meio", tags: "58", views: 0, remembers: 0 },
-  { palavra: "μνημεῖον, τό (40)", pronuncia: "mnēmeîon, tó", traducao: "túmulo, tumba", tags: "40", views: 0, remembers: 0 },
-  { palavra: "οἶδα (318)", pronuncia: "oîda", traducao: "sei, conheço (perfeito com sentido presente)", tags: "318", views: 0, remembers: 0 },
-  { palavra: "ὅμοιος, -α, -ον (45)", pronuncia: "hómoios, -a, -on", traducao: "semelhante [homônimo]", tags: "45", views: 0, remembers: 0 },
-  { palavra: "ψεύδομαι (12)", pronuncia: "pseúdomai", traducao: "eu minto; sou falso", tags: "12", views: 0, remembers: 0 },
-  { palavra: "ψεύστης, ὁ (10)", pronuncia: "pseústēs, ho", traducao: "mentiroso", tags: "10", views: 0, remembers: 0 }
+  { palavra: "ἀναβαίνω (82)", pronuncia: "anavéno", traducao: "eu subo", tags: "82", views: 0, remembers: 0 },
+  { palavra: "γάρ (1042)", pronuncia: "gar", traducao: "pois, portanto (conj. causal, posposta)", tags: "1042", views: 0, remembers: 0 },
+  { palavra: "γέ (28)", pronuncia: "ge", traducao: "partíc. enfática: na verdade, realmente, de fato, pelo menos", tags: "28", views: 0, remembers: 0 },
+  { palavra: "ἐάν (351)", pronuncia: "ian", traducao: "se (c. o subj.)", tags: "351", views: 0, remembers: 0 },
+  { palavra: "εἰ (507)", pronuncia: "i", traducao: "se (c. o ind.)", tags: "507", views: 0, remembers: 0 },
+  { palavra: "ἐκεῖνος, -η, -ο (265)", pronuncia: "ekínos, -i, -o", traducao: "aquele, aquela, aquilo", tags: "265", views: 0, remembers: 0 },
+  { palavra: "ἐντολή, -ῆς, ἡ (67)", pronuncia: "endolí", traducao: "mandamento, ordem", tags: "67", views: 0, remembers: 0 },
+  { palavra: "ἐπιγινώσκω (44)", pronuncia: "epyinósko", traducao: "eu conheço (bem); entendo; reconheço", tags: "44", views: 0, remembers: 0 },
+  { palavra: "καταβαίνω (82)", pronuncia: "katavéno", traducao: "eu desço", tags: "82", views: 0, remembers: 0 },
+  { palavra: "μετανοέω (34)", pronuncia: "metanoéo", traducao: "eu mudo a mente; mudo a vida/comportamento; me converto; me arrependo", tags: "34", views: 0, remembers: 0 },
+  { palavra: "ὅς, ἥ, ὅ (1365)", pronuncia: "os, i, o", traducao: "o qual, a qual; que (pron. relativo)", tags: "1365", views: 0, remembers: 0 },
+  { palavra: "ὅστις, ἥτις, ὅ τι (148)", pronuncia: "óstis, ítis, ó ti", traducao: "quem quer que, qualquer que; que (freq. = ὅς, ἥ, ὅ)", tags: "148", views: 0, remembers: 0 },
+  { palavra: "οὗτος, αὕτη, τοῦτο (1391)", pronuncia: "útos, aftí, túto", traducao: "este, esta, isto", tags: "1391", views: 0, remembers: 0 },
+  { palavra: "παραλαμβάνω (50)", pronuncia: "paralambáno", traducao: "eu tomo, levo comigo; recebo; aceito", tags: "50", views: 0, remembers: 0 },
+  { palavra: "πᾶς, πᾶσα, πᾶν (1244)", pronuncia: "pas, pasa, pan", traducao: "todo; cada; inteiro", tags: "1244", views: 0, remembers: 0 },
+  { palavra: "προσφέρω (47)", pronuncia: "prosféro", traducao: "eu trago; ofereço", tags: "47", views: 0, remembers: 0 },
+  { palavra: "τίς, τί (555)", pronuncia: "tis, ti", traducao: "quem? que? qual? que tipo de? (pron. interrogativo)", tags: "555", views: 0, remembers: 0 },
+  { palavra: "τοιοῦτος, -αὕτη, -οῦτον (57)", pronuncia: "tióutos, afti, úton", traducao: "tal, desse tipo", tags: "57", views: 0, remembers: 0 },
+  { palavra: "τις, τι (526)", pronuncia: "tis, ti", traducao: "qualquer um, algum; alguém; alguma coisa (pron. indefinido, enclítico)", tags: "526", views: 0, remembers: 0 }
 ], []);
+
+
+//   const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
+//   { palavra: "εἰ (517)", pronuncia: "ei", traducao: "se (c. o ind.)", tags: "517", views: 0, remembers: 0 },
+//   { palavra: "ἄν (167)", pronuncia: "án", traducao: "part. condicional/eventualidade (não traduzida)", tags: "167", views: 0, remembers: 0 },
+//   { palavra: "ἐάν (351)", pronuncia: "eán", traducao: "se (c. o subj.)", tags: "351", views: 0, remembers: 0 },
+//   { palavra: "ἀδικία, ἡ (25)", pronuncia: "adikía, he̱", traducao: "injustiça, maldade", tags: "25", views: 0, remembers: 0 },
+//   { palavra: "ἄχρι / ἄχρις (49)", pronuncia: "áchri / áchris", traducao: "até; até que (c. gen.)", tags: "49", views: 0, remembers: 0 },
+//   { palavra: "ἴδιος, -α, -ον (114)", pronuncia: "ídios, -a, -on", traducao: "próprio", tags: "114", views: 0, remembers: 0 },
+//   { palavra: "καθαρίζω (31)", pronuncia: "katharízō", traducao: "eu limpo, purifico [catarse]", tags: "31", views: 0, remembers: 0 },
+//   { palavra: "λοιπός, -ή, -όν (55)", pronuncia: "loipós, -ē, -on", traducao: "restante; outro; adv.: daqui para frente; finalmente", tags: "55", views: 0, remembers: 0 },
+//   { palavra: "μέσος, -η, -ον (58)", pronuncia: "mésos, -e̱, -on", traducao: "(que está) no meio; do meio", tags: "58", views: 0, remembers: 0 },
+//   { palavra: "μνημεῖον, τό (40)", pronuncia: "mnēmeîon, tó", traducao: "túmulo, tumba", tags: "40", views: 0, remembers: 0 },
+//   { palavra: "οἶδα (318)", pronuncia: "oîda", traducao: "sei, conheço (perfeito com sentido presente)", tags: "318", views: 0, remembers: 0 },
+//   { palavra: "ὅμοιος, -α, -ον (45)", pronuncia: "hómoios, -a, -on", traducao: "semelhante [homônimo]", tags: "45", views: 0, remembers: 0 },
+//   { palavra: "ψεύδομαι (12)", pronuncia: "pseúdomai", traducao: "eu minto; sou falso", tags: "12", views: 0, remembers: 0 },
+//   { palavra: "ψεύστης, ὁ (10)", pronuncia: "pseústēs, ho", traducao: "mentiroso", tags: "10", views: 0, remembers: 0 }
+// ], []);
 
   // const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
   //   { palavra: "δικαιόω (39)", pronuncia: "dikaióo̱", traducao: "eu justifico, declaro justo", tags: "39", views: 0, remembers: 0 },
