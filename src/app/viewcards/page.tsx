@@ -12,27 +12,30 @@ interface VocabularioItem {
 }
 
 export default function ViewCards() {
-  const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
-  { palavra: "ἀναβαίνω (82)", pronuncia: "anavéno", traducao: "eu subo", tags: "82", views: 0, remembers: 0 },
-  { palavra: "γάρ (1042)", pronuncia: "gar", traducao: "pois, portanto (conj. causal, posposta)", tags: "1042", views: 0, remembers: 0 },
-  { palavra: "γέ (28)", pronuncia: "ge", traducao: "partíc. enfática: na verdade, realmente, de fato, pelo menos", tags: "28", views: 0, remembers: 0 },
-  { palavra: "ἐάν (351)", pronuncia: "ian", traducao: "se (c. o subj.)", tags: "351", views: 0, remembers: 0 },
-  { palavra: "εἰ (507)", pronuncia: "i", traducao: "se (c. o ind.)", tags: "507", views: 0, remembers: 0 },
-  { palavra: "ἐκεῖνος, -η, -ο (265)", pronuncia: "ekínos, -i, -o", traducao: "aquele, aquela, aquilo", tags: "265", views: 0, remembers: 0 },
-  { palavra: "ἐντολή, -ῆς, ἡ (67)", pronuncia: "endolí", traducao: "mandamento, ordem", tags: "67", views: 0, remembers: 0 },
-  { palavra: "ἐπιγινώσκω (44)", pronuncia: "epyinósko", traducao: "eu conheço (bem); entendo; reconheço", tags: "44", views: 0, remembers: 0 },
-  { palavra: "καταβαίνω (82)", pronuncia: "katavéno", traducao: "eu desço", tags: "82", views: 0, remembers: 0 },
-  { palavra: "μετανοέω (34)", pronuncia: "metanoéo", traducao: "eu mudo a mente; mudo a vida/comportamento; me converto; me arrependo", tags: "34", views: 0, remembers: 0 },
-  { palavra: "ὅς, ἥ, ὅ (1365)", pronuncia: "os, i, o", traducao: "o qual, a qual; que (pron. relativo)", tags: "1365", views: 0, remembers: 0 },
-  { palavra: "ὅστις, ἥτις, ὅ τι (148)", pronuncia: "óstis, ítis, ó ti", traducao: "quem quer que, qualquer que; que (freq. = ὅς, ἥ, ὅ)", tags: "148", views: 0, remembers: 0 },
-  { palavra: "οὗτος, αὕτη, τοῦτο (1391)", pronuncia: "útos, aftí, túto", traducao: "este, esta, isto", tags: "1391", views: 0, remembers: 0 },
-  { palavra: "παραλαμβάνω (50)", pronuncia: "paralambáno", traducao: "eu tomo, levo comigo; recebo; aceito", tags: "50", views: 0, remembers: 0 },
-  { palavra: "πᾶς, πᾶσα, πᾶν (1244)", pronuncia: "pas, pasa, pan", traducao: "todo; cada; inteiro", tags: "1244", views: 0, remembers: 0 },
-  { palavra: "προσφέρω (47)", pronuncia: "prosféro", traducao: "eu trago; ofereço", tags: "47", views: 0, remembers: 0 },
-  { palavra: "τίς, τί (555)", pronuncia: "tis, ti", traducao: "quem? que? qual? que tipo de? (pron. interrogativo)", tags: "555", views: 0, remembers: 0 },
-  { palavra: "τοιοῦτος, -αὕτη, -οῦτον (57)", pronuncia: "tióutos, afti, úton", traducao: "tal, desse tipo", tags: "57", views: 0, remembers: 0 },
-  { palavra: "τις, τι (526)", pronuncia: "tis, ti", traducao: "qualquer um, algum; alguém; alguma coisa (pron. indefinido, enclítico)", tags: "526", views: 0, remembers: 0 }
-], []);
+const initialVocabulary: VocabularioItem[] = React.useMemo(() => [ { palavra: "ἀγρός, ὁ (37)", pronuncia: "agrós", traducao: "campo, terreno [agricultura]", tags: "37", views: 0, remembers: 0 }, { palavra: "εὐθέως / εὐθύς (36/51)", pronuncia: "efthéos / efthís", traducao: "imediatamente, logo", tags: "36/51", views: 0, remembers: 0 }, { palavra: "θηρίον, τό (46)", pronuncia: "thiríon", traducao: "animal; besta, fera", tags: "46", views: 0, remembers: 0 }, { palavra: "καθώς (182)", pronuncia: "kathós", traducao: "assim como; visto que; conforme", tags: "182", views: 0, remembers: 0 }, { palavra: "οὔτε (87)", pronuncia: "úte", traducao: "e não; nem... nem", tags: "87", views: 0, remembers: 0 }, { palavra: "οὐχί (53)", pronuncia: "uxí", traducao: "forma enfática de οὐ", tags: "53", views: 0, remembers: 0 }, { palavra: "πίστις, -εως, ἡ (243)", pronuncia: "pístis", traducao: "fidelidade, lealdade; confiança; fé; crença", tags: "243", views: 0, remembers: 0 }, { palavra: "πόλις, -εως, ἡ (164)", pronuncia: "pólis", traducao: "cidade [metrópole]", tags: "164", views: 0, remembers: 0 }, { palavra: "προσκυνέω (60)", pronuncia: "proskinéo", traducao: "eu adoro; prostro-me; reverencio", tags: "60", views: 0, remembers: 0 }, { palavra: "σάρξ, σαρκός, ἡ (147)", pronuncia: "sárx, sarkós", traducao: "carne, corpo; natureza humana/pecaminosa", tags: "147", views: 0, remembers: 0 }, { palavra: "σημεῖον, -ου, τό (77)", pronuncia: "simíon", traducao: "sinal; sinal milagroso", tags: "77", views: 0, remembers: 0 }, { palavra: "σπείρω (52)", pronuncia: "spíro", traducao: "eu semeio", tags: "52", views: 0, remembers: 0 }, { palavra: "σπέρμα, -ατος, τό (43)", pronuncia: "spérma", traducao: "semente; descendência", tags: "43", views: 0, remembers: 0 }, { palavra: "συνάγω (59)", pronuncia: "sinágo", traducao: "eu reúno; ajunto", tags: "59", views: 0, remembers: 0 }, { palavra: "τιμή, -ῆς, ἡ (41)", pronuncia: "timí", traducao: "honra; preço", tags: "41", views: 0, remembers: 0 }, { palavra: "φυλακή, -ῆς, ἡ (47)", pronuncia: "filakí", traducao: "guarda; sentinela; prisão; vigília", tags: "47", views: 0, remembers: 0 }, { palavra: "χρεία, -ας, ἡ (49)", pronuncia: "hría", traducao: "necessidade; falta", tags: "49", views: 0, remembers: 0 } ], []);
+
+
+//   const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
+//   { palavra: "ἀναβαίνω (82)", pronuncia: "anavéno", traducao: "eu subo", tags: "82", views: 0, remembers: 0 },
+//   { palavra: "γάρ (1042)", pronuncia: "gar", traducao: "pois, portanto (conj. causal, posposta)", tags: "1042", views: 0, remembers: 0 },
+//   { palavra: "γέ (28)", pronuncia: "ge", traducao: "partíc. enfática: na verdade, realmente, de fato, pelo menos", tags: "28", views: 0, remembers: 0 },
+//   { palavra: "ἐάν (351)", pronuncia: "ian", traducao: "se (c. o subj.)", tags: "351", views: 0, remembers: 0 },
+//   { palavra: "εἰ (507)", pronuncia: "i", traducao: "se (c. o ind.)", tags: "507", views: 0, remembers: 0 },
+//   { palavra: "ἐκεῖνος, -η, -ο (265)", pronuncia: "ekínos, -i, -o", traducao: "aquele, aquela, aquilo", tags: "265", views: 0, remembers: 0 },
+//   { palavra: "ἐντολή, -ῆς, ἡ (67)", pronuncia: "endolí", traducao: "mandamento, ordem", tags: "67", views: 0, remembers: 0 },
+//   { palavra: "ἐπιγινώσκω (44)", pronuncia: "epyinósko", traducao: "eu conheço (bem); entendo; reconheço", tags: "44", views: 0, remembers: 0 },
+//   { palavra: "καταβαίνω (82)", pronuncia: "katavéno", traducao: "eu desço", tags: "82", views: 0, remembers: 0 },
+//   { palavra: "μετανοέω (34)", pronuncia: "metanoéo", traducao: "eu mudo a mente; mudo a vida/comportamento; me converto; me arrependo", tags: "34", views: 0, remembers: 0 },
+//   { palavra: "ὅς, ἥ, ὅ (1365)", pronuncia: "os, i, o", traducao: "o qual, a qual; que (pron. relativo)", tags: "1365", views: 0, remembers: 0 },
+//   { palavra: "ὅστις, ἥτις, ὅ τι (148)", pronuncia: "óstis, ítis, ó ti", traducao: "quem quer que, qualquer que; que (freq. = ὅς, ἥ, ὅ)", tags: "148", views: 0, remembers: 0 },
+//   { palavra: "οὗτος, αὕτη, τοῦτο (1391)", pronuncia: "útos, aftí, túto", traducao: "este, esta, isto", tags: "1391", views: 0, remembers: 0 },
+//   { palavra: "παραλαμβάνω (50)", pronuncia: "paralambáno", traducao: "eu tomo, levo comigo; recebo; aceito", tags: "50", views: 0, remembers: 0 },
+//   { palavra: "πᾶς, πᾶσα, πᾶν (1244)", pronuncia: "pas, pasa, pan", traducao: "todo; cada; inteiro", tags: "1244", views: 0, remembers: 0 },
+//   { palavra: "προσφέρω (47)", pronuncia: "prosféro", traducao: "eu trago; ofereço", tags: "47", views: 0, remembers: 0 },
+//   { palavra: "τίς, τί (555)", pronuncia: "tis, ti", traducao: "quem? que? qual? que tipo de? (pron. interrogativo)", tags: "555", views: 0, remembers: 0 },
+//   { palavra: "τοιοῦτος, -αὕτη, -οῦτον (57)", pronuncia: "tióutos, afti, úton", traducao: "tal, desse tipo", tags: "57", views: 0, remembers: 0 },
+//   { palavra: "τις, τι (526)", pronuncia: "tis, ti", traducao: "qualquer um, algum; alguém; alguma coisa (pron. indefinido, enclítico)", tags: "526", views: 0, remembers: 0 }
+// ], []);
 
 
 //   const initialVocabulary: VocabularioItem[] = React.useMemo(() => [
